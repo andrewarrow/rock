@@ -42,8 +42,10 @@ current "target" it just connected to after the last MOV.
 
 For example:
 
+```
 hosts["127.0.0.1:30001"] = conn1
 hosts["127.0.0.1:30002"] = conn2
+```
 
 When it gets a MOV response with 127.0.0.1:30003 and 127.0.0.1:30003 is not
 in the map of hosts, it will connect and add it:
