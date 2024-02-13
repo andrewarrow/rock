@@ -1,0 +1,4 @@
+export REDIS_CLUSTER_IP=127.0.0.1
+export REDIS_CLUSTER_PORT=30001
+go build
+./rock info

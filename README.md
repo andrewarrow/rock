@@ -1,2 +1,2 @@
 # rock
-Redit Orchestration of Cluster Konnections 
+Redis Orchestration of Cluster Konnections 

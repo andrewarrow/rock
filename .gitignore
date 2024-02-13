@@ -1,5 +1,5 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+go.sum
+.DS_Store
+env.sh
+data
+rock
