@@ -52,5 +52,24 @@ in the map of hosts, it will connect and add it:
 
 hosts["127.0.0.1:30003"] = conn3
 
+# calling commands
 
+You can make calls like:
 
+```
+c.Set("test", "foo")
+c.Get("test")
+c.SAdd("foo", "bar")
+c.SMembers("foo")
+c.SRem("foo", "bar")
+```
+
+And they are thread safe because;
+
+```
+cc := c.TakeFromPool()
+defer c.PlaceBackInPool(cc)
+```
+
+Before each command it gets it's own ClientConnection from the pool
+and is the only one using that ClientConnection until it returns it.
