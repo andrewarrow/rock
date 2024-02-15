@@ -3,3 +3,4 @@ go.sum
 env.sh
 data
 rock
+examples/basic/basic
