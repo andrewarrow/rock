@@ -17,6 +17,22 @@ func TestSet(t *testing.T) {
 	}
 }
 
+func TestSAdd(t *testing.T) {
+	c.SAdd("set1", "val1")
+	c.SAdd("set1", "val2")
+	reply := c.SMembers("set1")
+	fmt.Println(reply)
+	if reply != "val1,val2" {
+		t.Errorf("get returned %s, expected %s", reply, "val1,val2")
+	}
+	c.SRem("set1", "val1")
+	reply = c.SMembers("set1")
+	fmt.Println(reply)
+	if reply != "val2" {
+		t.Errorf("get returned %s, expected %s", reply, "val2")
+	}
+}
+
 func setup() {
 	ip := "127.0.0.1"
 	port := "30001"
