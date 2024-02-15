@@ -71,5 +71,5 @@ cc := c.TakeFromPool()
 defer c.PlaceBackInPool(cc)
 ```
 
-Before each command it gets it's own ClientConnection from the pool
+Before each command it gets its own ClientConnection from the pool
 and is the only one using that ClientConnection until it returns it.
