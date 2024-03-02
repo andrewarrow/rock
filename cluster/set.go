@@ -8,7 +8,7 @@ func (c *Client) Set(k, v string) error {
 	cc := c.TakeFromPool()
 	defer c.PlaceBackInPool(cc)
 
-	command := fmt.Sprintf("SET %s %s\r\n", k, escape(v))
+	command := fmt.Sprintf("SET %s %q\r\n", k, v)
 	return cc.TryCommand(command)
 }
 

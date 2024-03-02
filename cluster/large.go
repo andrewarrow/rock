@@ -4,7 +4,7 @@ var large = `In the bustling city of Metropolis, where skyscrapers kissed the sk
 
 Intrigued, Alex entered the shop, discovering a wise old inventor named Eldora. Eldora sensed Alex's creative spirit and presented a time-traveling device—an extraordinary invention from a bygone era. Eager for adventure, Alex accepted the challenge, activating the device with a touch.
 
-Transported to a world of flying cars and holographic displays, Alex marveled at the future. However, a sudden glitch in the device trapped Alex in a parallel universe. To return home, Alex needed to navigate through challenges and solve futuristic puzzles.
+Transported to "a world" of flying cars and holographic displays, Alex marveled at the future. However, a sudden glitch in the device trapped Alex in a parallel universe. To return home, Alex needed to navigate through challenges and solve futuristic puzzles.
 
 Along the journey, Alex encountered sentient robots, holographic guides, and discovered the secrets of renewable energy sources. Each obstacle brought a lesson in innovation and resilience. Alex's reputation as a legendary inventor spread throughout the futuristic city.
 

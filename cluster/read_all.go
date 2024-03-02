@@ -19,6 +19,7 @@ func (c *ClientConnection) ReadFirst() (string, error) {
 	}
 
 	first := string(c.buffer[0:n])
+	fmt.Println(first)
 	return first, nil
 }
 
@@ -34,10 +35,11 @@ func (c *ClientConnection) ReadToLimit(first string) (string, error) {
 	sizeString := string(sizeBuffer)
 	sizeLimit, _ := strconv.Atoi(sizeString)
 
-	data := []byte(first[len(sizeString)+1:])
+	data := []byte(strings.TrimSpace(first[len(sizeString)+1:]))
+	fmt.Println(string(data))
 
 	fmt.Println(len(data), sizeLimit)
-	if len(data)-2 == sizeLimit {
+	if len(data) == sizeLimit {
 		return string(data), nil
 	}
 

@@ -9,9 +9,7 @@ func escapeDouble(s string) string {
 	return s
 }
 func escapeSingle(s string) string {
-	if strings.Contains(s, `'`) {
-		return "''" + s + "''"
-	}
+	//strings.ReplaceAll(s, `'`, `\'`)
 	return s
 }
 func escape(s string) string {
