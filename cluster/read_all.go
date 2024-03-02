@@ -71,17 +71,22 @@ func (c *ClientConnection) ReadMembers(first string) (string, error) {
 	for i, line := range lines[1:] {
 		if i%2 == 0 {
 			amount, _ := strconv.Atoi(line[1:])
-			fmt.Println("a", i, line, amount)
+			//fmt.Println("a", i, line, amount)
+			_ = amount // TODO
 		} else {
 			if strings.HasPrefix(line, ":") {
-				fmt.Println("b", i, line)
+				//fmt.Println("b", i, line)
 				buffer = append(buffer, line[1:])
 			} else {
 				buffer = append(buffer, line)
 			}
 		}
 	}
-	fmt.Println(complete, total, len(lines))
+
+	if !complete {
+		//TODO
+	}
+	//fmt.Println(complete, total, len(lines))
 	/*
 		*3\r\n           # Array with 3 elements
 		$5\r\nHello\r\n   # First element: Bulk string "Hello" with length 5

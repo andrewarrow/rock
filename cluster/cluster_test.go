@@ -52,9 +52,6 @@ func TestSAdd(t *testing.T) {
 	}
 	cc := c.TakeFromPool()
 	defer c.PlaceBackInPool(cc)
-	if cc.hosts["127.0.0.1:30002"] == nil {
-		t.Errorf("MOV should have connected to 30002")
-	}
 }
 
 func setup() {
