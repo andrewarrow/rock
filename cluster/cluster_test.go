@@ -30,6 +30,13 @@ func TestSet(t *testing.T) {
 		t.Errorf("get returned %s, expected %s", reply, "foo")
 	}
 }
+func TestLargeSAdd(t *testing.T) {
+	for i := 0; i < 1000; i++ {
+		c.SAdd("set1", fmt.Sprintf("test%d", i))
+	}
+	reply := c.SMembers("set1")
+	fmt.Println("hi", reply)
+}
 
 func TestSAdd(t *testing.T) {
 	c.SAdd("set1", "val1")
@@ -50,8 +57,6 @@ func TestSAdd(t *testing.T) {
 	if reply != "val2" {
 		t.Errorf("get returned %s, expected %s", reply, "val2")
 	}
-	cc := c.TakeFromPool()
-	defer c.PlaceBackInPool(cc)
 }
 
 func setup() {
