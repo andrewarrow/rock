@@ -65,10 +65,21 @@ func (c *ClientConnection) ReadMembers(first string) (string, error) {
 	if len(lines) == 0 {
 		return "", fmt.Errorf("size")
 	}
+	buffer := []string{}
 	total, _ := strconv.Atoi(lines[0])
 	complete := len(lines)-1 == total*2
-	for i, line := range lines {
-		fmt.Println(i, line)
+	for i, line := range lines[1:] {
+		if i%2 == 0 {
+			amount, _ := strconv.Atoi(line[1:])
+			fmt.Println("a", i, line, amount)
+		} else {
+			if strings.HasPrefix(line, ":") {
+				fmt.Println("b", i, line)
+				buffer = append(buffer, line[1:])
+			} else {
+				buffer = append(buffer, line)
+			}
+		}
 	}
 	fmt.Println(complete, total, len(lines))
 	/*
@@ -77,15 +88,6 @@ func (c *ClientConnection) ReadMembers(first string) (string, error) {
 		:42\r\n           # Second element: Integer reply 42
 		$11\r\nWorld!\r\n
 	*/
-	/*
-		for _, item := range response[2:] {
-			if !strings.HasPrefix(item, "$") {
-				if strings.HasPrefix(item, ":") {
-					buffer = append(buffer, item[1:])
-				} else {
-					buffer = append(buffer, item)
-				}
-			}
-		}*/
-	return string(""), nil
+	reply := strings.Join(buffer, ",")
+	return reply, nil
 }
