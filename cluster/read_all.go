@@ -59,3 +59,31 @@ func (c *ClientConnection) ReadToLimit(first string) (string, error) {
 
 	return string(data), nil
 }
+
+func (c *ClientConnection) ReadMembers(first string) (string, error) {
+	lines := strings.Split(first[1:], "\r\n")
+	if len(lines) == 0 {
+		return "", fmt.Errorf("size")
+	}
+	total, _ := strconv.Atoi(lines[0])
+	for i := 0; i < total; i++ {
+		fmt.Println(lines[i+1])
+	}
+	/*
+		*3\r\n           # Array with 3 elements
+		$5\r\nHello\r\n   # First element: Bulk string "Hello" with length 5
+		:42\r\n           # Second element: Integer reply 42
+		$11\r\nWorld!\r\n
+	*/
+	/*
+		for _, item := range response[2:] {
+			if !strings.HasPrefix(item, "$") {
+				if strings.HasPrefix(item, ":") {
+					buffer = append(buffer, item[1:])
+				} else {
+					buffer = append(buffer, item)
+				}
+			}
+		}*/
+	return string(""), nil
+}

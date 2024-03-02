@@ -91,24 +91,11 @@ func (c *ClientConnection) RunCommand(command string) (string, bool, error) {
 		}
 		reply = theReply
 	} else if strings.HasPrefix(first, "*") {
-		/*
-			*3\r\n           # Array with 3 elements
-			$5\r\nHello\r\n   # First element: Bulk string "Hello" with length 5
-			:42\r\n           # Second element: Integer reply 42
-			$11\r\nWorld!\r\n
-		*/
-		buffer := []string{}
-		/*
-			for _, item := range response[2:] {
-				if !strings.HasPrefix(item, "$") {
-					if strings.HasPrefix(item, ":") {
-						buffer = append(buffer, item[1:])
-					} else {
-						buffer = append(buffer, item)
-					}
-				}
-			}*/
-		reply = strings.Join(buffer, ",")
+		theReply, err := c.ReadMembers(first)
+		if err != nil {
+			return "", false, err
+		}
+		reply = theReply
 	} else if strings.HasPrefix(first, ":") {
 		reply = fixForIntReply(first)
 	} else if strings.HasPrefix(first, "-MOVED") {
