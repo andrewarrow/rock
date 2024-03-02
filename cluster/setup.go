@@ -85,6 +85,7 @@ func (c *ClientConnection) RunCommand(command string) (string, bool, error) {
 	} else if strings.HasPrefix(first, "*0") {
 		reply = ""
 	} else if strings.HasPrefix(first, "$") {
+		fmt.Println("here")
 		theReply, err := c.ReadToLimit(first)
 		if err != nil {
 			return "", false, err
@@ -112,7 +113,7 @@ func (c *ClientConnection) RunCommand(command string) (string, bool, error) {
 	} else if strings.HasPrefix(first, ":") {
 		reply = fixForIntReply(first)
 	} else if strings.HasPrefix(first, "-MOVED") {
-		c.handleMoved(first)
+		c.handleMoved(strings.TrimSpace(first))
 		return "", true, nil
 	} else {
 		reply = strings.TrimSpace(first)
@@ -127,7 +128,9 @@ func (c *Client) Close() {
 
 func (c *ClientConnection) handleMoved(response string) {
 	tokens := strings.Split(response, " ")
+	fmt.Println("rc1", response)
 	moved := tokens[len(tokens)-1]
+	fmt.Println("rc1", moved)
 	//tokens = strings.Split(moved, ":")
 	//c.target = c.rip + ":" + tokens[1]
 	c.target = moved
