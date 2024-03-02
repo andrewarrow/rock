@@ -61,14 +61,16 @@ func (c *ClientConnection) ReadToLimit(first string) (string, error) {
 }
 
 func (c *ClientConnection) ReadMembers(first string) (string, error) {
-	lines := strings.Split(first[1:], "\r\n")
+	lines := strings.Split(first[1:len(first)-2], "\r\n")
 	if len(lines) == 0 {
 		return "", fmt.Errorf("size")
 	}
 	total, _ := strconv.Atoi(lines[0])
-	for i := 0; i < total; i++ {
-		fmt.Println(lines[i+1])
+	complete := len(lines)-1 == total
+	for i, line := range lines {
+		fmt.Println(i, line)
 	}
+	fmt.Println(complete, total, len(lines))
 	/*
 		*3\r\n           # Array with 3 elements
 		$5\r\nHello\r\n   # First element: Bulk string "Hello" with length 5
