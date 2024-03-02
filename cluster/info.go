@@ -2,7 +2,6 @@ package cluster
 
 import (
 	"fmt"
-	"io"
 	"net"
 )
 
@@ -29,23 +28,25 @@ func (c *ClientConnection) Info() string {
 }
 
 func (c *ClientConnection) ReadInfoAll() string {
-	buffer := make([]byte, 1024*900)
+	buffer := make([]byte, 1024)
 	data := []byte{}
 
 	for {
 		n, err := c.hosts[c.target].Read(buffer)
 		if err != nil {
-			if err == io.EOF {
-				fmt.Println(err)
-				break
-			}
 			fmt.Println(err)
-			break
+			return ""
 		}
 
-		if n > 0 {
-			//fmt.Println("n", n)
-			data = append(data, buffer[0:n]...)
+		thing := buffer[0:n]
+		data = append(data, thing...)
+
+		if len(thing) < 4 {
+			return ""
+		}
+		lastFour := thing[len(thing)-4:]
+		if lastFour[0] == 13 && lastFour[1] == 10 &&
+			lastFour[2] == 13 && lastFour[3] == 10 {
 			break
 		}
 	}

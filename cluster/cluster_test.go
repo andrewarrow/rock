@@ -9,6 +9,11 @@ import (
 
 var c *Client
 
+func TestInfo(t *testing.T) {
+	reply := c.Info()
+	fmt.Println(reply)
+}
+
 func TestSet(t *testing.T) {
 	c.Set("test", "foo")
 	reply := c.Get("test")
