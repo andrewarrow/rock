@@ -51,7 +51,7 @@ func (c *ClientConnection) ReadToLimit(first string) (string, error) {
 		thing := c.buffer[0:n]
 		data = append(data, thing...)
 
-		fmt.Println("b", len(data), sizeLimit)
+		//fmt.Println("b", len(data), sizeLimit)
 		if len(data)-2 == sizeLimit {
 			break
 		}

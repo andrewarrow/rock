@@ -127,9 +127,7 @@ func (c *Client) Close() {
 
 func (c *ClientConnection) handleMoved(response string) {
 	tokens := strings.Split(response, " ")
-	fmt.Println("rc1", response)
 	moved := tokens[len(tokens)-1]
-	fmt.Println("rc1", moved)
 	//tokens = strings.Split(moved, ":")
 	//c.target = c.rip + ":" + tokens[1]
 	c.target = moved

@@ -17,9 +17,8 @@ func TestInfo(t *testing.T) {
 func TestLargeRead(t *testing.T) {
 	c.Set("test", large)
 	reply := c.Get("test")
-	fmt.Println(len(reply))
-	if reply != "foo" {
-		t.Errorf("get returned %d, expected %s", len(reply), "foo")
+	if len(reply) != 1671 {
+		t.Errorf("get returned %d, expected %d", len(reply), 1671)
 	}
 }
 
