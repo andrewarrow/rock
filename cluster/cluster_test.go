@@ -15,7 +15,7 @@ func TestInfo(t *testing.T) {
 }
 
 func TestLargeRead(t *testing.T) {
-	c.Set("test", "foo")
+	c.Set("test", large)
 	reply := c.Get("test")
 	fmt.Println(reply)
 	if reply != "foo" {
