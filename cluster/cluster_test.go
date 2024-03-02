@@ -11,7 +11,7 @@ var c *Client
 
 func TestInfo(t *testing.T) {
 	reply := c.Info()
-	fmt.Println(reply)
+	fmt.Println(len(reply))
 }
 
 func TestLargeRead(t *testing.T) {
