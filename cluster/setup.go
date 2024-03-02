@@ -85,7 +85,6 @@ func (c *ClientConnection) RunCommand(command string) (string, bool, error) {
 	} else if strings.HasPrefix(first, "*0") {
 		reply = ""
 	} else if strings.HasPrefix(first, "$") {
-		fmt.Println("here")
 		theReply, err := c.ReadToLimit(first)
 		if err != nil {
 			return "", false, err
