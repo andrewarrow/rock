@@ -12,14 +12,15 @@ var c *Client
 func TestInfo(t *testing.T) {
 	reply := c.Info()
 	fmt.Println(len(reply))
+	fmt.Println(reply)
 }
 
 func TestLargeRead(t *testing.T) {
-	c.Set("test", "foo")
+	c.Set("test", large)
 	reply := c.Get("test")
-	fmt.Println(reply)
-	if reply != "foo" {
-		t.Errorf("get returned %s, expected %s", reply, "foo")
+	fmt.Println("11", reply)
+	if len(reply) != 5 {
+		t.Errorf("get returned %d, expected %s", len(reply), "foo")
 	}
 }
 

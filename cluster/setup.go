@@ -26,7 +26,7 @@ func NewClient(poolSize int, ip, port string) *Client {
 	for i := 0; i < poolSize; i++ {
 		cc := ClientConnection{}
 		cc.hosts = map[string]net.Conn{}
-		cc.buffer = make([]byte, MAX_SIZE*2)
+		cc.buffer = make([]byte, MAX_SIZE)
 		c.connections = append(c.connections, &cc)
 	}
 	c.rip = ip + ":" + port
@@ -54,33 +54,6 @@ func (c *ClientConnection) Connect(target string) bool {
 	return true
 }
 
-func (c *ClientConnection) ReadAll() ([]string, error) {
-	data := []byte{}
-
-	count := 0
-	for {
-		n, err := c.hosts[c.target].Read(c.buffer)
-		if err != nil {
-			fmt.Println(err)
-			return []string{}, err
-		}
-
-		if n > 0 {
-			//fmt.Println("n", n)
-			data = append(data, c.buffer[0:n]...)
-			break
-		}
-		count++
-		if count > MAX_SIZE {
-			return []string{}, fmt.Errorf("too many read 0")
-		}
-	}
-
-	raw := string(data)
-	tokens := strings.Split(raw, "\r\n")
-	return tokens[0 : len(tokens)-1], nil
-}
-
 func (c *ClientConnection) RunCommand(command string) (string, bool, error) {
 	var isThere net.Conn
 	isThere = c.hosts[c.target]
@@ -97,55 +70,55 @@ func (c *ClientConnection) RunCommand(command string) (string, bool, error) {
 		return "", false, err
 	}
 
-	response, err := c.ReadAll()
-	if err != nil {
-		fmt.Println("rc1", err)
-		c.hosts[c.target] = nil
-		return "", false, err
-	}
-	//for i, item := range response {
-	//	fmt.Println("target2b", command, i, item)
-	//}
+	return c.ReadAll()
+	/*
+		response, err := c.ReadAll()
+		if err != nil {
+			fmt.Println("rc1", err)
+			c.hosts[c.target] = nil
+			return "", false, err
+		}
+		//for i, item := range response {
+		//	fmt.Println("target2b", command, i, item)
+		//}
 
-	first := response[0]
+		first := response[0]
 
-	reply := ""
-	if strings.HasPrefix(first, "$-1") {
-		reply = ""
-	} else if strings.HasPrefix(first, "*-1") {
-		reply = ""
-	} else if strings.HasPrefix(first, "*0") {
-		reply = ""
-	} else if strings.HasPrefix(first, "$") {
-		reply = strings.TrimSpace(strings.Join(response[1:], ""))
-	} else if strings.HasPrefix(first, "*") {
-		/*
-			*3\r\n           # Array with 3 elements
-			$5\r\nHello\r\n   # First element: Bulk string "Hello" with length 5
-			:42\r\n           # Second element: Integer reply 42
-			$11\r\nWorld!\r\n
-		*/
-		buffer := []string{}
-		for _, item := range response[2:] {
-			if !strings.HasPrefix(item, "$") {
-				if strings.HasPrefix(item, ":") {
-					buffer = append(buffer, item[1:])
-				} else {
-					buffer = append(buffer, item)
+		reply := ""
+		if strings.HasPrefix(first, "$-1") {
+			reply = ""
+		} else if strings.HasPrefix(first, "*-1") {
+			reply = ""
+		} else if strings.HasPrefix(first, "*0") {
+			reply = ""
+		} else if strings.HasPrefix(first, "$") {
+			reply = strings.TrimSpace(strings.Join(response[1:], ""))
+		} else if strings.HasPrefix(first, "*") {
+		//		*3\r\n           # Array with 3 elements
+			//	$5\r\nHello\r\n   # First element: Bulk string "Hello" with length 5
+		//		:42\r\n           # Second element: Integer reply 42
+			//	$11\r\nWorld!\r\n
+			buffer := []string{}
+			for _, item := range response[2:] {
+				if !strings.HasPrefix(item, "$") {
+					if strings.HasPrefix(item, ":") {
+						buffer = append(buffer, item[1:])
+					} else {
+						buffer = append(buffer, item)
+					}
 				}
 			}
+			reply = strings.Join(buffer, ",")
+		} else if strings.HasPrefix(first, ":") {
+			reply = strings.TrimSpace(strings.Join(response[1:], ""))
+		} else if strings.HasPrefix(first, "-MOVED") {
+			c.handleMoved(first)
+			return "", true, nil
+		} else {
+			reply = strings.TrimSpace(first)
 		}
-		reply = strings.Join(buffer, ",")
-	} else if strings.HasPrefix(first, ":") {
-		reply = strings.TrimSpace(strings.Join(response[1:], ""))
-	} else if strings.HasPrefix(first, "-MOVED") {
-		c.handleMoved(first)
-		return "", true, nil
-	} else {
-		reply = strings.TrimSpace(first)
-	}
-
-	return reply, false, nil
+	*/
+	//return reply, false, nil
 }
 
 func (c *Client) Close() {
