@@ -14,6 +14,15 @@ func TestInfo(t *testing.T) {
 	fmt.Println(reply)
 }
 
+func TestLargeRead(t *testing.T) {
+	c.Set("test", "foo")
+	reply := c.Get("test")
+	fmt.Println(reply)
+	if reply != "foo" {
+		t.Errorf("get returned %s, expected %s", reply, "foo")
+	}
+}
+
 func TestSet(t *testing.T) {
 	c.Set("test", "foo")
 	reply := c.Get("test")

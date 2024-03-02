@@ -3,6 +3,7 @@ package cluster
 import (
 	"fmt"
 	"net"
+	"strconv"
 )
 
 func (c *Client) Info() string {
@@ -31,6 +32,7 @@ func (c *ClientConnection) ReadInfoAll() string {
 	buffer := make([]byte, 1024)
 	data := []byte{}
 
+	sizeLimit := 0
 	for {
 		n, err := c.hosts[c.target].Read(buffer)
 		if err != nil {
@@ -44,9 +46,20 @@ func (c *ClientConnection) ReadInfoAll() string {
 		if len(thing) < 4 {
 			return ""
 		}
-		lastFour := thing[len(thing)-4:]
-		if lastFour[0] == 13 && lastFour[1] == 10 &&
-			lastFour[2] == 13 && lastFour[3] == 10 {
+		if thing[0] == '$' && sizeLimit == 0 {
+			sizeBuffer := []byte{}
+			for _, char := range thing[1:] {
+				if char == 13 {
+					break
+				}
+				sizeBuffer = append(sizeBuffer, char)
+			}
+			sizeString := string(sizeBuffer)
+			sizeLimit, _ = strconv.Atoi(sizeString)
+			data = data[len(sizeString)+1+2:]
+		}
+
+		if len(data)-2 == sizeLimit {
 			break
 		}
 	}
