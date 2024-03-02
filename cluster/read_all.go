@@ -66,7 +66,7 @@ func (c *ClientConnection) ReadMembers(first string) (string, error) {
 		return "", fmt.Errorf("size")
 	}
 	total, _ := strconv.Atoi(lines[0])
-	complete := len(lines)-1 == total
+	complete := len(lines)-1 == total*2
 	for i, line := range lines {
 		fmt.Println(i, line)
 	}
